@@ -224,12 +224,17 @@ public class JSONValue {
      * @param s - Must not be null.
      * @param sb
      */
-    static void escape(String s, StringBuffer sb) {
-		for(int i=0;i<s.length();i++){
+    static void escape(final String s, final StringBuffer sb) 
+    {
+    	int stringLength = s.length(); 
+		for(int i=0;i<stringLength;i++){
 			char ch=s.charAt(i);
 			switch(ch){
 			case '"':
 				sb.append("\\\"");
+				break;
+			case '\'':
+				sb.append("\\\'");
 				break;
 			case '\\':
 				sb.append("\\\\");
