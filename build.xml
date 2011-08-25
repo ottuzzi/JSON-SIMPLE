@@ -1,32 +1,61 @@
 <project name="json-simple" default="main" basedir=".">
+	<property name="srcDir" value="src"/>
+	<property name="binDir" value="build/main"/>
+	<property name="libDir" value="build/main"/>
 	<property name="current-version" value="1.1"/>
 	<property name="jar-name" value="json_simple-${current-version}.jar"/>
-	
-	<target name="main" depends="jar">
+	<property name="jar-withSources-name" value="json_simple-${current-version}-all.jar"/>
+		
+	<target name="main" depends="jar,jarWithSources">
 	</target>
 	
 	<target name="clean">
 		<delete includeemptydirs="true">
-			<fileset dir="build/main" includes="**/*"/>
+			<fileset dir="${binDir}" includes="**/*"/>
 		 </delete>
-		<delete file="lib/${jar-name}"/>
+		<delete file="${libDir}/${jar-name}"/>
 	</target>
 	
 	<target name="mkdir">
-	    <mkdir dir="build/main"/>
+	    <mkdir dir="${binDir}"/>
 	</target>
 	
 	<target name="compile" depends="mkdir">
-		<javac 	srcdir="src" 
-				destdir="build/main"
+		<javac 	srcdir="${srcDir}" 
+				destdir="${binDir}"
 				includes="**/*.java"
 				target="1.2"
 				source="1.2"/>
 	</target>
 	
 	<target name="jar" depends="compile">
-		<jar	destfile="lib/${jar-name}"
-				basedir="build/main"
+		<jar	destfile="${libDir}/${jar-name}"
+				basedir="${binDir}"
 				includes="**/*.class"/>
+		<manifest>
+			<attribute name="Bundle-Name" 
+					   value="json.simple"/>
+			<attribute name="Bundle-SymbolicName" 
+				       value="${ant.project.name}"/>
+		    <attribute name="Bundle-Version" 
+		    	       value="${current-version}"/>
+			<attribute name="Export-Package" 
+				       value="org.json.simple, org.json.simple.parser"/>
+		</manifest>
+	</target>
+		
+	<target name="jarWithSources" depends="compile">
+		<jar	destfile="${libDir}/${jar-name}"
+				includes="${binDir}/**/*.class, ${srcDir}/**/*.java"/>
+		<manifest>
+			<attribute name="Bundle-Name" 
+					   value="json.simple"/>
+			<attribute name="Bundle-SymbolicName" 
+				       value="${ant.project.name}"/>
+		    <attribute name="Bundle-Version" 
+		    	       value="${current-version}"/>
+			<attribute name="Export-Package" 
+				       value="org.json.simple, org.json.simple.parser"/>
+		</manifest>
 	</target>
 </project>
