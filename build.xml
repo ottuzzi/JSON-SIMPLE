@@ -1,61 +1,54 @@
 <project name="json-simple" default="main" basedir=".">
+	<tstamp>
+		<format 
+			property="BUILD_DATETIME"
+			pattern="dd-MMMM-yyyy HH:mm" 
+			locale="en,US"/>
+	</tstamp>
+	
 	<property name="srcDir" value="src"/>
-	<property name="binDir" value="build/main"/>
-	<property name="libDir" value="build/main"/>
-	<property name="current-version" value="1.1"/>
+	<property name="buildDir" value="build"/>
+	<property name="libDir" value="lib"/>
+	<property name="current-version" value="${DSTAMP}${TSTAMP}"/>
 	<property name="jar-name" value="json_simple-${current-version}.jar"/>
-	<property name="jar-withSources-name" value="json_simple-${current-version}-all.jar"/>
 		
-	<target name="main" depends="jar,jarWithSources">
+	<target name="main" depends="jar">
 	</target>
 	
 	<target name="clean">
-		<delete includeemptydirs="true">
-			<fileset dir="${binDir}" includes="**/*"/>
-		 </delete>
-		<delete file="${libDir}/${jar-name}"/>
+		<delete dir="${buildDir}"/>
+		<delete dir="${libDir}"/>
 	</target>
 	
 	<target name="mkdir">
-	    <mkdir dir="${binDir}"/>
+	    <mkdir dir="${buildDir}"/>
+		<mkdir dir="${libDir}"/>
 	</target>
 	
 	<target name="compile" depends="mkdir">
 		<javac 	srcdir="${srcDir}" 
-				destdir="${binDir}"
+				destdir="${buildDir}"
 				includes="**/*.java"
 				target="1.2"
 				source="1.2"/>
 	</target>
 	
 	<target name="jar" depends="compile">
-		<jar	destfile="${libDir}/${jar-name}"
-				basedir="${binDir}"
-				includes="**/*.class"/>
-		<manifest>
-			<attribute name="Bundle-Name" 
-					   value="json.simple"/>
-			<attribute name="Bundle-SymbolicName" 
-				       value="${ant.project.name}"/>
-		    <attribute name="Bundle-Version" 
-		    	       value="${current-version}"/>
-			<attribute name="Export-Package" 
-				       value="org.json.simple, org.json.simple.parser"/>
-		</manifest>
-	</target>
-		
-	<target name="jarWithSources" depends="compile">
-		<jar	destfile="${libDir}/${jar-name}"
-				includes="${binDir}/**/*.class, ${srcDir}/**/*.java"/>
-		<manifest>
-			<attribute name="Bundle-Name" 
-					   value="json.simple"/>
-			<attribute name="Bundle-SymbolicName" 
-				       value="${ant.project.name}"/>
-		    <attribute name="Bundle-Version" 
-		    	       value="${current-version}"/>
-			<attribute name="Export-Package" 
-				       value="org.json.simple, org.json.simple.parser"/>
-		</manifest>
+		<jar destfile="${libDir}/${jar-name}">
+			<fileset dir="${buildDir}"/>
+			<fileset dir="${srcDir}"/>
+			<manifest>
+				<attribute name="Bundle-Name" 
+						   value="json.simple"/>
+				<attribute name="Bundle-SymbolicName" 
+						   value="${ant.project.name}"/>
+				<attribute name="Bundle-Version" 
+						   value="${current-version}"/>
+				<attribute name="Export-Package" 
+						   value="org.json.simple, org.json.simple.parser"/>
+				<attribute name="Build-Date" 
+						   value="${BUILD_DATETIME}"/>
+			</manifest>
+		</jar>
 	</target>
 </project>
