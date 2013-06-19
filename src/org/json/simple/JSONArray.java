@@ -25,17 +25,17 @@ public class JSONArray extends ArrayList implements List, JSONAware, JSONStreamA
      * 
      * @see org.json.simple.JSONValue#writeJSONString(Object, Writer)
      * 
-     * @param list
+     * @param iterable
      * @param out
      */
-	public static void writeJSONString(List list, Writer out) throws IOException{
-		if(list == null){
+	public static void writeJSONString(Iterable iterable, Writer out) throws IOException{
+		if(iterable == null){
 			out.write("null");
 			return;
 		}
 		
 		boolean first = true;
-		Iterator iter=list.iterator();
+		Iterator iter=iterable.iterator();
 		
         out.write('[');
 		while(iter.hasNext()){
@@ -65,16 +65,16 @@ public class JSONArray extends ArrayList implements List, JSONAware, JSONStreamA
 	 * 
 	 * @see org.json.simple.JSONValue#toJSONString(Object)
 	 * 
-	 * @param list
+	 * @param iterable
 	 * @return JSON text, or "null" if list is null.
 	 */
-	public static String toJSONString(List list){
-		if(list == null)
+	public static String toJSONString(Iterable iterable){
+		if(iterable == null)
 			return "null";
 		
         boolean first = true;
         StringBuffer sb = new StringBuffer();
-		Iterator iter=list.iterator();
+		Iterator iter=iterable.iterator();
         
         sb.append('[');
 		while(iter.hasNext()){

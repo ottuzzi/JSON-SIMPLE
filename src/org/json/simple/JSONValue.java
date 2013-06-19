@@ -146,8 +146,8 @@ public class JSONValue {
 			return;
 		}
 		
-		if(value instanceof List){
-			JSONArray.writeJSONString((List)value, out);
+		if(value instanceof Iterable){
+			JSONArray.writeJSONString((Iterable)value, out);
             return;
 		}
 		
@@ -201,8 +201,8 @@ public class JSONValue {
 		if(value instanceof Map)
 			return JSONObject.toJSONString((Map)value);
 		
-		if(value instanceof List)
-			return JSONArray.toJSONString((List)value);
+		if(value instanceof Iterable)
+			return JSONArray.toJSONString((Iterable)value);
 		
 		return value.toString();
 	}
